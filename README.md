@@ -167,9 +167,13 @@ http://127.0.0.1:8080/openapi.json
 
 ## API Endpoints
 
-Method	->> POST, GET, GET, PUT, DELETE
-Endpoint ->> /products,	 /products,  /products/{product_id},  /products/{product_id},  /products/{product_id}               
-Purpose  ->> Create a new product,  Get all products,  Get one product,  Update a product,   Delete a product
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| POST | `/products` | Create a new product |
+| GET | `/products` | Get all products |
+| GET | `/products/{product_id}` | Get one product |
+| PUT | `/products/{product_id}` | Update a product |
+| DELETE | `/products/{product_id}` | Delete a product |
 
 ### Example Request
 
