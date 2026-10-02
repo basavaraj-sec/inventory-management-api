@@ -1,0 +1,16 @@
+import os
+
+from dotenv import load_dotenv
+
+
+load_dotenv()
+
+
+DATABASE_TYPE = os.getenv("DATABASE_TYPE", "sqlite").lower()
+
+DATABASE_HOST = os.getenv("DATABASE_HOST", "")
+DATABASE_PORT = os.getenv("DATABASE_PORT", "")
+DATABASE_NAME = os.getenv("DATABASE_NAME", "inventory")
+DATABASE_USER = os.getenv("DATABASE_USER", "")
+DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD", "")
+DATABASE_DRIVER = os.getenv("DATABASE_DRIVER", "")
