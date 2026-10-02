@@ -11,7 +11,7 @@ This project demonstrates CRUD operations, database configuration, validation, d
 - SQLAlchemy ORM
 - SQLite support
 - MySQL support
-- PostgreSQL configuration support
+- Configuration support
 - Duplicate SKU validation
 - Dependency Injection
 - Pytest API tests
@@ -25,7 +25,6 @@ This project demonstrates CRUD operations, database configuration, validation, d
 - Pydantic
 - SQLite
 - MySQL
-- PostgreSQL
 - Pytest
 
 ## Project Structure
