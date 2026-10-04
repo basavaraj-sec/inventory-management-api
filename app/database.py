@@ -12,7 +12,7 @@ from app.config import (
     DATABASE_DRIVER,
 )
 
-
+# Build the connection string based on the selected database.
 def build_database_url() -> str:
     if DATABASE_TYPE == "sqlite":
         if DATABASE_NAME == ":memory:":
@@ -37,7 +37,7 @@ def build_database_url() -> str:
 
 DATABASE_URL = build_database_url()
 
-
+# Use a shared connection for the in-memory database used by tests.
 if DATABASE_TYPE == "sqlite" and DATABASE_NAME == ":memory:":
     engine = create_engine(
         DATABASE_URL,
@@ -52,7 +52,7 @@ elif DATABASE_TYPE == "sqlite":
 else:
     engine = create_engine(DATABASE_URL)
 
-
+# Create a reusable session factory for database operations.
 SessionLocal = sessionmaker(
     autocommit=False,
     autoflush=False,
@@ -61,7 +61,7 @@ SessionLocal = sessionmaker(
 
 Base = declarative_base()
 
-
+# Open a database session for the API request and close it afterwards.
 def get_db():
     db = SessionLocal()
 

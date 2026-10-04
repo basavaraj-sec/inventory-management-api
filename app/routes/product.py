@@ -14,7 +14,7 @@ from app.repositories.product import ProductRepository
 
 router = APIRouter()
 
-
+# Keep service creation in one place so FastAPI can inject it into the routes.
 def get_product_service() -> ProductService:
     return ProductService(ProductRepository())
 
@@ -45,6 +45,7 @@ def create_product(
             detail=str(error)
         )
 
+     # Return a success message along with the newly created product.
     return {
         "message": "Product created successfully",
         "product": {
@@ -65,6 +66,7 @@ def get_products(
     db: Session = Depends(get_db),
     product_service: ProductService = Depends(get_product_service)
 ):
+     # Ask the service for all products.
     products = product_service.get_all_products(db)
 
     return products
@@ -79,12 +81,14 @@ def get_product(
     db: Session = Depends(get_db),
     product_service: ProductService = Depends(get_product_service)
 ):
+    # Find the requested product through the service layer.
     product = product_service.get_product_by_id(
         db,
         product_id
     )
 
     if product is None:
+        # Return 404 when the requested product does not exist.
         raise HTTPException(
             status_code=404,
             detail="Product not found"
@@ -103,6 +107,7 @@ def update_product(
     db: Session = Depends(get_db),
     product_service: ProductService = Depends(get_product_service)
 ):
+    # Let the service handle the update operation.
     product = product_service.update_product(
         db,
         product_id,
@@ -114,7 +119,7 @@ def update_product(
             status_code=404,
             detail="Product not found"
         )
-
+    # Return the updated product along with a success message.
     return {
         "message": "Product updated successfully",
         "product": {
@@ -132,13 +137,15 @@ def delete_product(
     product_id: int,
     db: Session = Depends(get_db),
     product_service: ProductService = Depends(get_product_service)
-):
+):  
+    # Ask the service to delete the requested product.
     deleted = product_service.delete_product(
         db,
         product_id
     )
 
     if not deleted:
+        # Return 404 when there is no product with the given ID.
         raise HTTPException(
             status_code=404,
             detail="Product not found"

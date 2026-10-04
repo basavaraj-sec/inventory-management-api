@@ -15,6 +15,7 @@ class ProductRepository:
             return product
 
         except IntegrityError:
+            # Undo the failed transaction before returning the error.
             db.rollback()
             raise ValueError("Product with this SKU already exists")
 

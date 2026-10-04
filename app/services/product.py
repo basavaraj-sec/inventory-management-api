@@ -16,6 +16,7 @@ class ProductService:
         product_data: ProductCreate
     ) -> Product:
 
+        # Convert the API data into a database model before saving it.
         product = Product(
             name=product_data.name,
             price=product_data.price,

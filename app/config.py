@@ -2,7 +2,7 @@ import os
 
 from dotenv import load_dotenv
 
-
+# Load the settings from the .env file.
 load_dotenv()
 
 

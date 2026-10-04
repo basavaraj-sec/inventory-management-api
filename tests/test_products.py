@@ -1,5 +1,6 @@
 import os
 
+# Use a separate in-memory database while running tests.
 os.environ["DATABASE_TYPE"] = "sqlite"
 os.environ["DATABASE_NAME"] = ":memory:"
 
@@ -26,7 +27,7 @@ TestingSessionLocal = sessionmaker(
     bind=engine,
 )
 
-
+# Create the tables in the test database before running the tests.
 Base.metadata.create_all(bind=engine)
 
 
@@ -38,7 +39,7 @@ def override_get_db():
     finally:
         db.close()
 
-
+# Replace the application's database dependency with the test database.
 app.dependency_overrides[get_db] = override_get_db
 
 client = TestClient(app)

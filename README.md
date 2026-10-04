@@ -1,23 +1,10 @@
 # Inventory Management API
 
-A simple REST API built with Python, FastAPI, and SQLAlchemy for managing products.
+A simple REST API for managing products using Python, FastAPI, and SQLAlchemy.
 
-This project demonstrates CRUD operations, database configuration, validation, dependency injection, and basic automated testing.
+This project supports basic product CRUD operations and allows the database configuration to be changed using environment variables.
 
-## Features
-
-- Create, read, update, and delete products
-- FastAPI REST API
-- SQLAlchemy ORM
-- SQLite support
-- MySQL support
-- Configuration support
-- Duplicate SKU validation
-- Dependency Injection
-- Pytest API tests
-- Swagger API documentation
-
-## Technologies Used
+## Tech Stack
 
 - Python
 - FastAPI
@@ -44,29 +31,19 @@ inventory-management-api/
 │   ├── services/
 │   │   └── product.py
 │   ├── config.py
-│   ├── database.py
-│   └── __init__.py
+│   └── database.py
 │
 ├── tests/
-│   ├── test_products.py
-│   └── __init__.py
+│   └── test_products.py
 │
 ├── .env.example
 ├── .gitignore
 ├── main.py
 ├── pytest.ini
-├── requirements.txt
 └── README.md
 ```
 
-## Requirements
-
-Make sure you have:
-
-- Python 3.10+
-- pip
-
-## Installation
+## Setup
 
 Clone the repository:
 
@@ -82,7 +59,7 @@ python -m venv venv
 venv\Scripts\activate
 ```
 
-Install the required packages:
+Install the dependencies:
 
 ```powershell
 pip install -r requirements.txt
@@ -90,11 +67,11 @@ pip install -r requirements.txt
 
 ## Database Configuration
 
-Database settings are read from the `.env` file.
+The project can run with SQLite or MySQL.
+
+Create a `.env` file in the project root.
 
 ### SQLite
-
-For a simple local setup:
 
 ```env
 DATABASE_TYPE=sqlite
@@ -108,43 +85,27 @@ DATABASE_DRIVER=
 
 ### MySQL
 
-Example configuration:
-
 ```env
 DATABASE_TYPE=mysql
 DATABASE_HOST=localhost
 DATABASE_PORT=3306
 DATABASE_NAME=inventory
 DATABASE_USER=root
-DATABASE_PASSWORD=your_database_password
+DATABASE_PASSWORD=your_password
 DATABASE_DRIVER=pymysql
 ```
 
-### PostgreSQL
+The database connection is configured through the `.env` file, so the application code does not need to be changed when switching between supported databases.
 
-Example configuration:
+## Run the API
 
-```env
-DATABASE_TYPE=postgresql
-DATABASE_HOST=localhost
-DATABASE_PORT=5432
-DATABASE_NAME=inventory
-DATABASE_USER=postgres
-DATABASE_PASSWORD=your_database_password
-DATABASE_DRIVER=psycopg2
-```
-
-The database can be changed through configuration without changing the application code.
-
-## Run the Application
-
-Start the API:
+Start the application:
 
 ```powershell
 uvicorn main:app --reload --port 8080
 ```
 
-The application will be available at:
+The API will run at:
 
 ```text
 http://127.0.0.1:8080
@@ -152,27 +113,23 @@ http://127.0.0.1:8080
 
 ## API Documentation
 
-Swagger UI:
+Swagger UI is available at:
 
 ```text
 http://127.0.0.1:8080/docs
 ```
 
-OpenAPI specification:
-
-```text
-http://127.0.0.1:8080/openapi.json
-```
+You can use Swagger to test the APIs directly from the browser.
 
 ## API Endpoints
 
-| Method | Endpoint | Purpose |
-|--------|----------|---------|
-| POST | `/products` | Create a new product |
-| GET | `/products` | Get all products |
-| GET | `/products/{product_id}` | Get one product |
-| PUT | `/products/{product_id}` | Update a product |
-| DELETE | `/products/{product_id}` | Delete a product |
+ Method       Endpoint                   Description 
+  
+ POST        /products                   Create a product 
+ GET         /products                   Get all products 
+ GET         /products/{product_id}      Get a product 
+ PUT         /products/{product_id}      Update a product 
+ DELETE      /products/{product_id}      Delete a product 
 
 ### Example Request
 
@@ -185,21 +142,6 @@ http://127.0.0.1:8080/openapi.json
 }
 ```
 
-### Example Response
-
-```json
-{
-    "message": "Product created successfully",
-    "product": {
-        "id": 1,
-        "name": "Dell Laptop",
-        "price": 55000,
-        "quantity": 5,
-        "sku": "DELL-001"
-    }
-}
-```
-
 ## Testing
 
 Run the tests with:
@@ -208,52 +150,26 @@ Run the tests with:
 pytest
 ```
 
-The tests use an in-memory SQLite database, so test data is separate from the application's normal database.
+The tests use an in-memory SQLite database.
 
-## Architecture
+## Code Structure
 
-The application is organized into simple layers:
+The code is separated into different layers:
 
 ```text
-Client
-   |
-   v
-Routes
-   |
-   v
+Route
+  ↓
 Service
-   |
-   v
+  ↓
 Repository
-   |
-   v
+  ↓
 Database
 ```
 
-### Routes
+- **Routes** handle the API endpoints.
+- **Services** handle the application logic.
+- **Repositories** handle database operations.
+- **Models** define the database tables.
+- **Schemas** handle request and response validation.
 
-Handles API requests, responses, and HTTP status codes.
-
-### Service
-
-Handles application logic and coordinates operations.
-
-### Repository
-
-Handles database operations using SQLAlchemy.
-
-### Models
-
-Defines the database tables.
-
-### Schemas
-
-Defines request and response data using Pydantic.
-
-## Design Approach
-
-The project keeps different responsibilities separated instead of putting everything into one file.
-
-Dependency injection is used for the database session and product service, which also makes the application easier to test.
-
-The database connection is configuration-based so that the database can be changed without modifying the main application logic.
+Dependency injection is used for the database session and service layer to keep the code easier to test and maintain.
